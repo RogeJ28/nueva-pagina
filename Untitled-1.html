@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reflejo Visual y Movimiento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .button {
+            padding: 20px 40px;
+            font-size: 18px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: absolute;
+        }
+
+        .button:active {
+            transform: scale(0.95);
+        }
+
+        .reflection {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            background: linear-gradient(to top, rgba(52, 152, 219, 0.3), rgba(52, 152, 219, 0));
+            filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .button.clicked + .reflection {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="button" id="clickBtn">¡Haz clic aquí!</button>
+    <div class="reflection" id="reflection"></div>
+
+    <script>
+        const button = document.getElementById('clickBtn');
+        const reflection = document.getElementById('reflection');
+
+        // Función para generar posiciones aleatorias
+        function getRandomPosition() {
+            const maxX = window.innerWidth - button.offsetWidth;
+            const maxY = window.innerHeight - button.offsetHeight;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            return { x: randomX, y: randomY };
+        }
+
+        // Evento para el clic del botón
+        button.addEventListener('click', () => {
+            // Mover el botón a una nueva posición aleatoria
+            const newPosition = getRandomPosition();
+            button.style.left = `${newPosition.x}px`;
+            button.style.top = `${newPosition.y}px`;
+
+            // Añadir la clase 'clicked' para el reflejo
+            button.classList.add('clicked');
+            setTimeout(() => {
+                button.classList.remove('clicked');
+            }, 300);
+        });
+    </script>
+
+</body>
+</html>
